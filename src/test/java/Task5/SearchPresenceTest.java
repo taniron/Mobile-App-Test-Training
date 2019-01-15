@@ -3,6 +3,7 @@ package Task5;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -41,13 +42,15 @@ public class SearchPresenceTest {
         WebElement elementToInitSearch = driver.findElementByXPath("//*[contains(@text,'Search Wikipedia')]");
         elementToInitSearch.click();
 
-        waitForElementPresentByXpath("//*[contains(@text, 'Search…')]", "Cannot find search input", 5);
+        waitForElementPresent(By.xpath("//*[@resource-id='org.wikipedia:id/search_src_text']"), "Can't find search area", 5);
+        WebElement searchBox = driver.findElement(By.xpath("//*[@resource-id='org.wikipedia:id/search_src_text']"));
+
+        Assert.assertTrue("The search box doesn't contain word 'Search…'",  searchBox.getText().contains("Search…"));
     }
 
-    private WebElement waitForElementPresentByXpath(String xpath, String error_message, long timeoutInSeconds) {
+    private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(error_message + "\n");
-        By by = By.xpath(xpath);
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 }
