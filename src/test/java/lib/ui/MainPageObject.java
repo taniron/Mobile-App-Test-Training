@@ -28,6 +28,14 @@ public class MainPageObject {
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
+    public List<WebElement> waitForElementsPresent(String locator, String error_message, long timeoutInSeconds) {
+
+       waitForElementPresent(locator, error_message, timeoutInSeconds);
+       By by = this.getLocatorByString(locator);
+        List searchedElements = driver.findElements(by);
+       return searchedElements;
+    }
+
     public WebElement waitForElementAndClick(String locator, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(locator, error_message, timeoutInSeconds);
         element.click();

@@ -13,7 +13,9 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_CANCLE_BUTTON = "id:org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_LIST = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']",
             SEARCH_ARTICLES = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_container']",
-            SEARCH_RESULT_ELEMENT = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title']";
+            SEARCH_RESULT_ELEMENT = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title']",
+            SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL = "xpath://*[*[@text='{TITLE}'] and *[@text='{DESCRIPTION}']]";
+
 
 
     WebElement searchResultList;
@@ -27,6 +29,13 @@ public class SearchPageObject extends MainPageObject {
     private static String getResultSearchElement(String substring) {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
     }
+
+
+    private static String getResultSearchElementByTitleAndDescription(String title, String description) {
+        return SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL.replace("{TITLE}", title).replace("{DESCRIPTION}", description);
+    }
+    //Tempates Methods
+
 
     public void initSearchInput() {
         this.waitForElementAndClick(SEARCH_INIT_ELEENT, "Cannot find and click search init element", 5);
@@ -66,8 +75,6 @@ public class SearchPageObject extends MainPageObject {
     public int checkAmountOfArticles() {
         this.waitForElementPresent(SEARCH_ARTICLES, "Cannot find saved article", 15);
         return this.getAmountOfElements(SEARCH_ARTICLES);
-
-
         //articles =  searchResultList.findElements(By.xpath(SEARCH_ARTICLES));
         //return articles.size();
     }
@@ -79,10 +86,21 @@ public class SearchPageObject extends MainPageObject {
 
     }
 
+    public void waitForElementWithSearchWordInTitle(String substring){
+        String searchResultXpath = getResultSearchElement(substring);
+        this.waitForElementPresent(searchResultXpath, "Cannot find and click search result with substring " + substring, 5);
+    }
 
     public void clickByArticleWithSubstring(String substring) {
         String searchResultXpath = getResultSearchElement(substring);
         this.waitForElementAndClick(searchResultXpath, "Cannot find and click search result with substring " + substring, 5);
+    }
+
+
+    public WebElement waitForElementByTitleAndDescription(String title, String description){
+
+        String searchResultXpath = getResultSearchElementByTitleAndDescription(title, description);
+        return this.waitForElementPresent(searchResultXpath, "Cannot find article with requested title and description " + title + " " + description, 15);
     }
 
 }

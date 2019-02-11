@@ -1,7 +1,10 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class ArticlePageObject extends MainPageObject {
 
@@ -48,7 +51,6 @@ public class ArticlePageObject extends MainPageObject {
     public void addSecondArticleToMyList() {
         this.waitForElementAndClick(OPTIONS_BUTTON, "Cannot find button to open article options", 15);
         this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list", 15);
-
         //this.waitForElementAndClick(By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"), "Cannot close article, cannot find X link", 15);
 
     }
@@ -65,5 +67,12 @@ public class ArticlePageObject extends MainPageObject {
 
     public void closeArticle() {
         this.waitForElementAndClick(CLOSE_ARTICLE_BUTTON, "Cannot close article, cannot find X link", 15);
+    }
+
+    public List<WebElement> getArticlesTitle(){
+
+       return this.waitForElementsPresent(SECOND_ARTICLE, "Cannot find all articles", 15);
+
+
     }
 }
