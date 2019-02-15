@@ -3,20 +3,21 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+import lib.Platform;
 
 import java.util.List;
 
-public class ArticlePageObject extends MainPageObject {
+abstract public class ArticlePageObject extends MainPageObject {
 
-    private static final String
-            TITLE = "id:org.wikipedia:id/view_page_title_text",
-            OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']",
-            OPTIONS_ADD_TO_MY_LIST_BUTTON = "xpath://*[@text='Add to reading list']",
-            ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button",
-            MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
-            MY_LIST_OK_BUTTON = "xpath://*[@text='OK']",
-            CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']",
-            SECOND_ARTICLE = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title']";
+    protected static String
+            TITLE,
+            OPTIONS_BUTTON,
+            OPTIONS_ADD_TO_MY_LIST_BUTTON,
+            ADD_TO_MY_LIST_OVERLAY,
+            MY_LIST_NAME_INPUT,
+            MY_LIST_OK_BUTTON,
+            CLOSE_ARTICLE_BUTTON,
+            SECOND_ARTICLE;
 
 
     public ArticlePageObject(AppiumDriver driver) {
@@ -31,7 +32,16 @@ public class ArticlePageObject extends MainPageObject {
 
     public String getArticleTitle() {
         WebElement titleElement = waitForTitleElement();
-        return titleElement.getAttribute("text");
+        if(Platform.getInstance().isAndroid()) {
+            return titleElement.getAttribute("text");
+        }
+        else {
+            return titleElement.getAttribute("name");
+        }
+    }
+
+    public void addArticlesToMySaved(){
+        this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list", 5);
     }
 
     public void addArticleToMyList(String nameOfFolder) {

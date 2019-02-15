@@ -4,6 +4,7 @@ package task11;
 import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
@@ -15,7 +16,7 @@ public class ArticleSearch extends CoreTestCase {
         String title = "Java (programming language)";
         String description = "Object-oriented programming language";
 
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(textSearch);
 
@@ -29,7 +30,7 @@ public class ArticleSearch extends CoreTestCase {
 
         String textSearch = "Java";
 
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(textSearch);
 

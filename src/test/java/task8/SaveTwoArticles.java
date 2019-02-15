@@ -1,30 +1,40 @@
 package task8;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.MyListPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 
 public class SaveTwoArticles extends CoreTestCase{
+
+    private static final String nameOfFolder = "Learning programming";
 
     public void testSaveTwoArticles()  {
 
         String textSearch = "Java";
 
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(textSearch);
 
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);;
         ArticlePageObject.waitForTitleElement();
 
         String articleTitle = ArticlePageObject.getArticleTitle();
-        String nameOfFolder = "Learning programming";
 
-        ArticlePageObject.addArticleToMyList(nameOfFolder);
+        if(Platform.getInstance().isAndroid()){
+            ArticlePageObject.addArticleToMyList(nameOfFolder);
+        } else{
+            ArticlePageObject.addArticlesToMySaved();
+        }
         ArticlePageObject.closeArticle();
 
         //open the second article
@@ -34,14 +44,21 @@ public class SaveTwoArticles extends CoreTestCase{
         ArticlePageObject.waitForTitleElement();
         ArticlePageObject.addSecondArticleToMyList();
 
-        MyListPageObject MyListPageObject = new MyListPageObject(driver);
-        MyListPageObject.openFolderByName(nameOfFolder);
+        MyListPageObject MyListPageObject = MyListPageObjectFactory.get(driver);
+
+        if (Platform.getInstance().isAndroid()) {
+            MyListPageObject.openFolderByName(nameOfFolder);
+        }
         ArticlePageObject.closeArticle();
 
-        NavigationUI NavigationUI = new NavigationUI(driver);
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyList();
 
-        MyListPageObject.openFolderByName(nameOfFolder);
+
+        if (Platform.getInstance().isAndroid()){
+            MyListPageObject.openFolderByName(nameOfFolder);
+        }
+
         MyListPageObject.swipeBySecondArticleToDelete(articleTitle);
 
         //check that the second article presences
