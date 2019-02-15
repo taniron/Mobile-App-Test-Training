@@ -3,6 +3,8 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import lib.Platform;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -16,7 +18,7 @@ public class MainPageObject {
 
     protected AppiumDriver driver;
 
-    public MainPageObject(AppiumDriver driver){
+    public MainPageObject(AppiumDriver driver) {
         this.driver = driver;
     }
 
@@ -30,10 +32,10 @@ public class MainPageObject {
 
     public List<WebElement> waitForElementsPresent(String locator, String error_message, long timeoutInSeconds) {
 
-       waitForElementPresent(locator, error_message, timeoutInSeconds);
-       By by = this.getLocatorByString(locator);
+        waitForElementPresent(locator, error_message, timeoutInSeconds);
+        By by = this.getLocatorByString(locator);
         List searchedElements = driver.findElements(by);
-       return searchedElements;
+        return searchedElements;
     }
 
     public WebElement waitForElementAndClick(String locator, String error_message, long timeoutInSeconds) {
@@ -61,6 +63,23 @@ public class MainPageObject {
         return element;
     }
 
+    public void clickElementToTheRightUpperCorner(String locator, String errorMessage) {
+
+        WebElement element = waitForElementPresent(locator + "/..", errorMessage, 10);
+        int rightX = element.getLocation().getX();
+        int upperY = element.getLocation().getY();
+        int lowerY = upperY + element.getSize().getHeight();
+        int middleY = (upperY + lowerY) / 2;
+        int width = element.getSize().getWidth();
+
+        int pointToClickX = (rightX + width) - 3;
+        int pointToClickY = middleY;
+
+        TouchAction action = new TouchAction(driver);
+        action.tap(pointToClickX, pointToClickY).perform();
+
+    }
+
     public void swipeElementToLeft(String locator, String error_message) {
         WebElement element = this.waitForElementPresent(locator, error_message, 15);
         int leftX = element.getLocation().getX();
@@ -69,13 +88,20 @@ public class MainPageObject {
         int lowerY = upperY + element.getSize().getHeight();
         int middleY = (upperY + lowerY) / 2;
 
+
         TouchAction action = new TouchAction(driver);
-        action
-                .press(rightX, middleY)
-                .waitAction(300)
-                .moveTo(leftX, middleY)
-                .release()
-                .perform();
+        action.press(rightX, middleY);
+        action.waitAction(300);
+
+        if (Platform.getInstance().isAndroid()) {
+            action.moveTo(leftX, middleY);
+        } else {
+            int offSetX = (-1 * element.getSize().getWidth());
+            action.moveTo(offSetX, 0);
+        }
+
+        action.release();
+        action.perform();
     }
 
     public int getAmountOfElements(String locator) {
@@ -118,20 +144,40 @@ public class MainPageObject {
         }
     }
 
-    private By getLocatorByString(String locator_with_type){
+    public void swipeUpTitleElementAppear(String locator, String errorMessage, int maxSwipes) {
+        int alreadySwiped = 0;
+
+        while (!this.isElementLocatedOnTheScreen(locator)) {
+
+            if (alreadySwiped > maxSwipes) {
+                Assert.assertTrue(errorMessage, this.isElementLocatedOnTheScreen(locator));
+            }
+
+            swipeUpQuick();
+            ++alreadySwiped;
+        }
+    }
+
+    public boolean isElementLocatedOnTheScreen(String locator) {
+
+        int elementLocationByY = this.waitForElementPresent(locator, "Cannot find element by locator", 1).getLocation().getY();
+        int screenSizeByY = driver.manage().window().getSize().getHeight();
+        return elementLocationByY < screenSizeByY;
+    }
+
+    private By getLocatorByString(String locator_with_type) {
         String[] explodedLocator = locator_with_type.split(Pattern.quote(":"), 2);
         String byType = explodedLocator[0];
         String locator = explodedLocator[1];
 
-        if(byType.equals("xpath")){
+        if (byType.equals("xpath")) {
             return By.xpath(locator);
-        }else if (byType.equals("id")){
+        } else if (byType.equals("id")) {
             return By.id(locator);
         } else {
             throw new IllegalArgumentException("Connot get type of locator. Locator: " + locator_with_type);
         }
     }
-
 
 
 }

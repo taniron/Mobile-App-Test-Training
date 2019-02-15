@@ -1,22 +1,23 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.junit.Assert;
+import lib.Platform;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class ArticlePageObject extends MainPageObject {
+abstract public class ArticlePageObject extends MainPageObject {
 
-    private static final String
-            TITLE = "id:org.wikipedia:id/view_page_title_text",
-            OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']",
-            OPTIONS_ADD_TO_MY_LIST_BUTTON = "xpath://*[@text='Add to reading list']",
-            ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button",
-            MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
-            MY_LIST_OK_BUTTON = "xpath://*[@text='OK']",
-            CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']",
-            SECOND_ARTICLE = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title']";
+    protected static String
+            TITLE,
+            JAVASCRIPT_SUBTITLE,
+            OPTIONS_BUTTON,
+            OPTIONS_ADD_TO_MY_LIST_BUTTON,
+            ADD_TO_MY_LIST_OVERLAY,
+            MY_LIST_NAME_INPUT,
+            MY_LIST_OK_BUTTON,
+            CLOSE_ARTICLE_BUTTON,
+            SECOND_ARTICLE;
 
 
     public ArticlePageObject(AppiumDriver driver) {
@@ -24,14 +25,38 @@ public class ArticlePageObject extends MainPageObject {
     }
 
     public WebElement waitForTitleElement() {
-
         return this.waitForElementPresent(TITLE, "Cannot find article title on page", 15);
+    }
+
+    public WebElement waitForJavaScriptTitleElement() {
+        return this.waitForElementPresent(JAVASCRIPT_SUBTITLE, "Cannot find article title on page", 15);
     }
 
 
     public String getArticleTitle() {
         WebElement titleElement = waitForTitleElement();
-        return titleElement.getAttribute("text");
+        if (Platform.getInstance().isAndroid()) {
+            return titleElement.getAttribute("text");
+        } else {
+            return titleElement.getAttribute("name");
+        }
+    }
+
+    public String getJavaScriptArticleSubTitle() {
+        WebElement titleElement = waitForJavaScriptTitleElement();
+        if (Platform.getInstance().isAndroid()) {
+            return titleElement.getAttribute("text");
+        } else {
+            return titleElement.getAttribute("name");
+        }
+    }
+
+    public WebElement getArticleElement() {
+        return waitForJavaScriptTitleElement();
+    }
+
+    public void addArticlesToMySaved() {
+        this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list", 5);
     }
 
     public void addArticleToMyList(String nameOfFolder) {
@@ -56,6 +81,7 @@ public class ArticlePageObject extends MainPageObject {
     }
 
     public void clickMyArticle() {
+        System.out.println("going to click " + SECOND_ARTICLE);
         this.waitForElementAndClick(SECOND_ARTICLE, "Cannot find saved article", 15);
     }
 
@@ -69,9 +95,9 @@ public class ArticlePageObject extends MainPageObject {
         this.waitForElementAndClick(CLOSE_ARTICLE_BUTTON, "Cannot close article, cannot find X link", 15);
     }
 
-    public List<WebElement> getArticlesTitle(){
+    public List<WebElement> getArticlesTitle() {
 
-       return this.waitForElementsPresent(SECOND_ARTICLE, "Cannot find all articles", 15);
+        return this.waitForElementsPresent(SECOND_ARTICLE, "Cannot find all articles", 15);
 
 
     }
