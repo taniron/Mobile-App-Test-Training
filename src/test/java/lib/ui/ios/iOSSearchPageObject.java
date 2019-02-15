@@ -6,8 +6,8 @@ import lib.ui.SearchPageObject;
 public class iOSSearchPageObject extends SearchPageObject {
 
     static {
-        SEARCH_INIT_ELEENT = "xpath://XCUIElementTypeSearchField[@name='Search Wikipedia']";
-        SEARCH_INPUT = "xpath://XCUIElementTypeSearchField[@value='Search Wikipedia']";
+        SEARCH_INIT_ELEMENT = "xpath://XCUIElementTypeSearchField[@name='Search Wikipedia']";
+        SEARCH_INPUT = "xpath://XCUIElementTypeSearchField[@name='Search Wikipedia']";
 
         //SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']";
         SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://XCUIElementTypeLink[contains(@name,'{SUBSTRING}')]";
@@ -19,7 +19,7 @@ public class iOSSearchPageObject extends SearchPageObject {
 
     }
 
-    public iOSSearchPageObject(AppiumDriver driver){
+    public iOSSearchPageObject(AppiumDriver driver) {
         super(driver);
     }
 }

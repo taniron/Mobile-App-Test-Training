@@ -8,11 +8,11 @@ import lib.ui.ios.iOSMyListPageObject;
 
 public class MyListPageObjectFactory {
 
-    public static MyListPageObject get(AppiumDriver driver){
-        if(Platform.getInstance().isAndroid()){
+    public static MyListPageObject get(AppiumDriver driver) {
+        if (Platform.getInstance().isAndroid()) {
             return new AndroidMyListPageObject(driver);
-        }else{
-            return  new iOSMyListPageObject(driver);
+        } else {
+            return new iOSMyListPageObject(driver);
         }
     }
 }

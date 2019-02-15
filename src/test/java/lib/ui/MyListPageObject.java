@@ -8,8 +8,8 @@ abstract public class MyListPageObject extends MainPageObject {
     protected static String
             //FOLDER_BY_NAME_TPL = "xpath://*[@resource-id='org.wikipedia:id/item_container']//*[@text='{FOLDER_NAME}']",
             FOLDER_BY_NAME_TPL,
-            //ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
-            ARTICLE_BY_TITLE_TPL;
+    //ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
+    ARTICLE_BY_TITLE_TPL;
 
     private static String getFolderXpathByName(String nameOfFolder) {
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}", nameOfFolder);
@@ -54,7 +54,7 @@ abstract public class MyListPageObject extends MainPageObject {
         String articleXpath = getSaveArticleXpathByTitle(articleTitle);
         this.swipeElementToLeft(articleXpath, "Cannot find saved article");
 
-        if (Platform.getInstance().isIOS()){
+        if (Platform.getInstance().isIOS()) {
             this.clickElementToTheRightUpperCorner(articleXpath, "Cannot find saved article");
         }
         this.waitForArticleToDisappearByTitle(articleTitle);

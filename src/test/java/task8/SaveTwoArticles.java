@@ -11,11 +11,11 @@ import lib.ui.factories.MyListPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 
-public class SaveTwoArticles extends CoreTestCase{
+public class SaveTwoArticles extends CoreTestCase {
 
     private static final String nameOfFolder = "Learning programming";
 
-    public void testSaveTwoArticles()  {
+    public void testSaveTwoArticles() {
 
         String textSearch = "Java";
 
@@ -25,37 +25,42 @@ public class SaveTwoArticles extends CoreTestCase{
 
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);;
-        ArticlePageObject.waitForTitleElement();
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
+        articlePageObject.waitForTitleElement();
 
-        String articleTitle = ArticlePageObject.getArticleTitle();
+        String articleTitle = articlePageObject.getArticleTitle();
 
-        if(Platform.getInstance().isAndroid()){
-            ArticlePageObject.addArticleToMyList(nameOfFolder);
-        } else{
-            ArticlePageObject.addArticlesToMySaved();
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.addArticleToMyList(nameOfFolder);
+        } else {
+            articlePageObject.addArticlesToMySaved();
         }
-        ArticlePageObject.closeArticle();
+        articlePageObject.closeArticle();
 
         //open the second article
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(textSearch);
         SearchPageObject.clickByArticleWithSubstring("JavaScript");
-        ArticlePageObject.waitForTitleElement();
-        ArticlePageObject.addSecondArticleToMyList();
+        articlePageObject.waitForTitleElement();
+
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.addSecondArticleToMyList();
+        } else {
+            articlePageObject.addArticlesToMySaved();
+        }
 
         MyListPageObject MyListPageObject = MyListPageObjectFactory.get(driver);
 
         if (Platform.getInstance().isAndroid()) {
             MyListPageObject.openFolderByName(nameOfFolder);
         }
-        ArticlePageObject.closeArticle();
+        articlePageObject.closeArticle();
 
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyList();
 
 
-        if (Platform.getInstance().isAndroid()){
+        if (Platform.getInstance().isAndroid()) {
             MyListPageObject.openFolderByName(nameOfFolder);
         }
 
@@ -65,9 +70,11 @@ public class SaveTwoArticles extends CoreTestCase{
         int amountOfSearchResult = SearchPageObject.getAmountOfFoundArticles();
         assertTrue("We found wrong number of articles", amountOfSearchResult == 1);
 
-        //go to remaind article and check title
-        ArticlePageObject.clickMyArticle();
-        String secondArticleTitle = ArticlePageObject.getArticleTitle();
-        assertTrue("The article title doesn't match", secondArticleTitle.compareTo("JavaScript") == 0);
+        //go to remained article and check title
+        articlePageObject.clickMyArticle();
+        String secondArticleSubTitle = articlePageObject.getJavaScriptArticleSubTitle();
+        assertTrue("The article subtitle doesn't match", secondArticleSubTitle.compareTo("Programming language") == 0);
+
+
     }
 }

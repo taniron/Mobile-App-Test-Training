@@ -7,7 +7,7 @@ abstract public class SearchPageObject extends MainPageObject {
 
 
    protected  static  String
-            SEARCH_INIT_ELEENT,
+            SEARCH_INIT_ELEMENT,
             SEARCH_INPUT,
             SEARCH_RESULT_BY_SUBSTRING_TPL,
             SEARCH_CANCLE_BUTTON,
@@ -38,8 +38,8 @@ abstract public class SearchPageObject extends MainPageObject {
 
 
     public void initSearchInput() {
-        this.waitForElementAndClick(SEARCH_INIT_ELEENT, "Cannot find and click search init element", 5);
-        this.waitForElementPresent(SEARCH_INIT_ELEENT, "Cannot find search input after clicking search init element", 5);
+        this.waitForElementAndClick(SEARCH_INIT_ELEMENT, "Cannot find and click search init element", 5);
+        this.waitForElementPresent(SEARCH_INIT_ELEMENT, "Cannot find search input after clicking search init element", 5);
     }
 
 

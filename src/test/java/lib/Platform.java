@@ -14,35 +14,37 @@ public class Platform {
 
     private static Platform instance;
 
-    private Platform(){}
+    private Platform() {
+    }
 
-    public static Platform getInstance(){
+    public static Platform getInstance() {
 
-        if (instance ==null){
+        if (instance == null) {
             instance = new Platform();
         }
         return instance;
     }
 
 
-    public AppiumDriver getDriver() throws Exception{
+    public AppiumDriver getDriver() throws Exception {
         URL URL = new URL(APPIUM_URL);
-        if(this.isAndroid()){
+        if (this.isAndroid()) {
             return new AndroidDriver(URL, this.getAndroidDesiredCapabilities());
-        } else if (this.isIOS()){
+        } else if (this.isIOS()) {
             return new IOSDriver(URL, this.getIOSDesiredCapabilities());
-        }else{
+        } else {
             throw new Exception("Cannot detect type of the driver. Platform value:" + this.getPlatformVar());
         }
 
     }
 
-   public boolean isAndroid(){
-       return isPlatform(PLATFORM_ANDROID);
-   }
-   public boolean isIOS(){
-       return  isPlatform(PLATFORM_IOS);
-   }
+    public boolean isAndroid() {
+        return isPlatform(PLATFORM_ANDROID);
+    }
+
+    public boolean isIOS() {
+        return isPlatform(PLATFORM_IOS);
+    }
 
     private DesiredCapabilities getAndroidDesiredCapabilities() {
 
@@ -53,7 +55,8 @@ public class Platform {
         capabilities.setCapability("automationName", "Appium");
         capabilities.setCapability("appPackage", "org.wikipedia");
         capabilities.setCapability("appActivity", ".main.MainActivity");
-        capabilities.setCapability("app", "C:\\Git\\Mobile-App-Test-Training\\Mobile-App-Test-Training\\apks\\org.wikipedia.apk");
+        capabilities.setCapability("app", "/Users/yurironin/apk/org.wikipedia.apk");
+//        capabilities.setCapability("app", "C:\\Git\\Mobile-App-Test-Training\\Mobile-App-Test-Training\\apks\\org.wikipedia.apk");
         return capabilities;
 
     }
@@ -63,22 +66,21 @@ public class Platform {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "iOS");
         capabilities.setCapability("deviceName", "iPhone SE");
-        capabilities.setCapability("platformVersion", "11.3");
+        capabilities.setCapability("platformVersion", "11.4");
         capabilities.setCapability("app", "/Users/yurironin/apk/Wikipedia.app");
         return capabilities;
 
     }
 
 
-    private String getPlatformVar(){
+    private String getPlatformVar() {
         return System.getenv("PLATFORM");
     }
 
-    private boolean isPlatform(String my_platform){
+    private boolean isPlatform(String my_platform) {
         String platform = this.getPlatformVar();
         return my_platform.equals(platform);
     }
-
 
 
 }

@@ -19,7 +19,7 @@ public class CoreTestCase extends TestCase {
         this.skipWelcomePageForIOSApp();
 
         //this.Platform = new Platform();
-       // driver = this.Platform.getDriver();
+        // driver = this.Platform.getDriver();
 
         //DesiredCapabilities capabilities = this.getCapabilitiesByPlatformEnv();
         //driver = new AndroidDriver(new URL(AppiumURL), capabilities);
@@ -32,16 +32,13 @@ public class CoreTestCase extends TestCase {
         super.setUp();
     }
 
-    private void skipWelcomePageForIOSApp(){
+    private void skipWelcomePageForIOSApp() {
 
-        if(Platform.getInstance().isIOS()){
+        if (Platform.getInstance().isIOS()) {
             WelcomePageObject WelcomePageObject = new WelcomePageObject(driver);
             WelcomePageObject.clickSkip();
         }
     }
-
-
-
 
 
 }

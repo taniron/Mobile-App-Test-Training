@@ -8,11 +8,11 @@ import lib.ui.ios.iOSNavigationUI;
 
 public class NavigationUIFactory {
 
-    public static NavigationUI get(AppiumDriver driver){
+    public static NavigationUI get(AppiumDriver driver) {
 
-        if(Platform.getInstance().isAndroid()){
+        if (Platform.getInstance().isAndroid()) {
             return new AndroidNavigationUI(driver);
-        }else{
+        } else {
             return new iOSNavigationUI(driver);
         }
     }

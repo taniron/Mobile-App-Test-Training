@@ -5,11 +5,11 @@ import lib.ui.NavigationUI;
 
 public class AndroidNavigationUI extends NavigationUI {
 
-    static{
+    static {
         MY_LIST_LINK = "xpath://android.widget.FrameLayout[@content-desc='My lists']";
     }
 
-    public AndroidNavigationUI(AppiumDriver driver){
+    public AndroidNavigationUI(AppiumDriver driver) {
         super(driver);
     }
 }
