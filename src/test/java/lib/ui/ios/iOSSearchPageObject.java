@@ -15,7 +15,7 @@ public class iOSSearchPageObject extends SearchPageObject {
         SEARCH_RESULT_LIST = "xpath://XCUIElementTypeCollectionView";
         SEARCH_ARTICLES = "xpath://XCUIElementTypeCell";
         SEARCH_RESULT_ELEMENT = "xpath://XCUIElementTypeLink";
-        SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL = "xpath://*[*[@text='{TITLE}'] and *[@text='{DESCRIPTION}']]";
+        SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL = "xpath://XCUIElementTypeLink[contains(@name,'{TITLE}') and contains(@name,'{DESCRIPTION}')]";
 
     }
 

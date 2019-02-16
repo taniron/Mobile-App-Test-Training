@@ -19,7 +19,7 @@ public class iOSArticlePageObject extends ArticlePageObject {
         //CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']";
         CLOSE_ARTICLE_BUTTON = "id:Back";
         SECOND_ARTICLE = "xpath://XCUIElementTypeCell";
-
+        SEARCH_RESULT_ARTICLE = "xpath://XCUIElementTypeLink";
     }
 
     public iOSArticlePageObject(AppiumDriver driver) {

@@ -17,7 +17,8 @@ abstract public class ArticlePageObject extends MainPageObject {
             MY_LIST_NAME_INPUT,
             MY_LIST_OK_BUTTON,
             CLOSE_ARTICLE_BUTTON,
-            SECOND_ARTICLE;
+            SECOND_ARTICLE,
+            SEARCH_RESULT_ARTICLE;
 
 
     public ArticlePageObject(AppiumDriver driver) {
@@ -96,9 +97,10 @@ abstract public class ArticlePageObject extends MainPageObject {
     }
 
     public List<WebElement> getArticlesTitle() {
-
         return this.waitForElementsPresent(SECOND_ARTICLE, "Cannot find all articles", 15);
+    }
 
-
+    public List<WebElement> getSearchResultArticlesTitle() {
+        return this.waitForElementsPresent(SEARCH_RESULT_ARTICLE, "Cannot find all articles", 15);
     }
 }

@@ -15,6 +15,7 @@ public class AndroidArticlePageObject extends ArticlePageObject {
         MY_LIST_OK_BUTTON = "xpath://*[@text='OK']";
         CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']";
         SECOND_ARTICLE = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title']";
+        SEARCH_RESULT_ARTICLE = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title']";
     }
 
     public AndroidArticlePageObject(AppiumDriver driver) {
